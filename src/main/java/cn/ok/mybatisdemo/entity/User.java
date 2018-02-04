@@ -1,5 +1,6 @@
 package cn.ok.mybatisdemo.entity;
 
+import com.google.gson.GsonBuilder;
 import lombok.Data;
 
 /**
@@ -10,4 +11,9 @@ public class User {
     private int userId = 0;
     private String userName;
     private String password;
+
+    @Override
+    public String toString() {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
+    }
 }

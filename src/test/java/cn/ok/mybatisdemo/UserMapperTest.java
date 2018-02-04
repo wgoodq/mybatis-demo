@@ -1,7 +1,7 @@
 package cn.ok.mybatisdemo;
 
 import cn.ok.mybatisdemo.entity.User;
-import cn.ok.mybatisdemo.mapper.UserMapper;
+import cn.ok.mybatisdemo.mapper.smp.SmpUserMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 public class UserMapperTest {
     @Autowired
-    private UserMapper userMapper;
+    private SmpUserMapper userMapper;
 
     @Test
     public void testQuery() {
@@ -26,7 +26,7 @@ public class UserMapperTest {
         user.setPassword("AA");
         user.setUserName("AA");
 
-        List<User> users = userMapper.doSelect(user);
+        List<User> users = userMapper.doSelect();
         System.out.println(users.toString());
 
         Assert.assertEquals(1, users.size(), 1d);

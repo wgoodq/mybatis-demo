@@ -1,7 +1,8 @@
 package cn.ok.mybatisdemo.controller;
 
 import cn.ok.mybatisdemo.entity.User;
-import cn.ok.mybatisdemo.mapper.UserMapper;
+import cn.ok.mybatisdemo.mapper.mydb.MydbUserMapper;
+import cn.ok.mybatisdemo.mapper.smp.SmpUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,18 +15,28 @@ import java.util.List;
 @RestController
 public class UserController {
     @Autowired
-    private UserMapper userMapper;
+    private MydbUserMapper mydbUserMapper;
 
-    @RequestMapping("/user")
-    public String getUser() {
+    @Autowired
+    private SmpUserMapper smpUserMapper;
+
+    @RequestMapping("/smpuser")
+    public String getSmpUser() {
         User user = new User();
         user.setPassword("AA");
         user.setUserName("AA");
 
-        List<User> users = userMapper.doSelect(user);
+        List<User> users = smpUserMapper.doSelect();
         System.out.println(users.toString());
 
         return users.toString();
+    }
 
+    @RequestMapping("/mydbuser")
+    public String getMydbUser() {
+        List<User> users = mydbUserMapper.doSelect();
+        System.out.println(users.toString());
+
+        return users.toString();
     }
 }
