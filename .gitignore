@@ -8,8 +8,6 @@ gen
 
 ### Java template
 # Compiled class file
-*.class
-
 # Log file
 *.log
 
@@ -20,7 +18,6 @@ gen
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip

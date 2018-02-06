@@ -1,18 +1,18 @@
 package cn.ok.mybatisdemo.config;
 
+import com.atomikos.jdbc.AtomikosDataSourceBean;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * @author kyou on 2018/2/4 15:58
@@ -27,14 +27,19 @@ public class MydbDataSource {
      * @return 数据源对象
      */
     @Bean(name = "MydbDataSource")
-    @ConfigurationProperties(prefix = "datasource.mysql.mydb")
-    @Primary
-    public DataSource mydbDataSource() {
-        return DataSourceBuilder.create().build();
+    @Autowired
+    public DataSource systemDataSource(Environment env) {
+        AtomikosDataSourceBean atomikosDataSource = new AtomikosDataSourceBean();
+        Properties prop = SmpDataSource.getDataSourceProperties(env, "datasource.mysql.mydb.");
+        atomikosDataSource.setXaDataSourceClassName("com.alibaba.druid.pool.xa.DruidXADataSource");
+        atomikosDataSource.setUniqueResourceName("MydbDB");
+        atomikosDataSource.setMinPoolSize(5);
+        atomikosDataSource.setMaxPoolSize(20);
+        atomikosDataSource.setXaProperties(prop);
+        return atomikosDataSource;
     }
 
     @Bean(name = "MydbSqlSessionFactory")
-    @Primary
     public SqlSessionFactory mydbSqlSessionFactory(@Qualifier("MydbDataSource") DataSource dataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
@@ -43,14 +48,7 @@ public class MydbDataSource {
         return bean.getObject();
     }
 
-    @Bean(name = "MydbTransactionManager")
-    @Primary
-    public DataSourceTransactionManager mydbTransactionManager(@Qualifier("MydbDataSource") DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
-
     @Bean(name = "MydbSqlSessionTemplate")
-    @Primary
     public SqlSessionTemplate mydbSqlSessionTemplate(
             @Qualifier("MydbSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
