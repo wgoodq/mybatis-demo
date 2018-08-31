@@ -1,9 +1,7 @@
 package cn.ok.mybatisdemo.mapper.smp;
 
 import cn.ok.mybatisdemo.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,4 +25,12 @@ public interface SmpUserMapper {
      */
     @Insert("INSERT INTO USER (USER_NAME,PASSWORD) VALUES (\"AA1\",\"AA1\")")
     int doInsert();
+
+    /**
+     * 更新数据
+     *
+     * @return 影响行数
+     */
+    @Update("UPDATE USER SET PASSWORD = #{password} WHERE USER_NAME = \"AA1\"")
+    int doUpdate(@Param("password") String password);
 }

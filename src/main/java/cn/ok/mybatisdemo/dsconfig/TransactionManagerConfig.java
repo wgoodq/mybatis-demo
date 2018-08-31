@@ -1,4 +1,4 @@
-package cn.ok.mybatisdemo.config;
+package cn.ok.mybatisdemo.dsconfig;
 
 import com.atomikos.icatch.jta.UserTransactionImp;
 import com.atomikos.icatch.jta.UserTransactionManager;
@@ -24,11 +24,11 @@ public class TransactionManagerConfig {
     @Bean(name = "userTransaction")
     public UserTransaction userTransaction() throws Throwable {
         UserTransactionImp userTransactionImp = new UserTransactionImp();
-        userTransactionImp.setTransactionTimeout(10000);
+        userTransactionImp.setTransactionTimeout(1000);
         return userTransactionImp;
     }
 
-    @Bean(name = "atomikosTransactionManager", initMethod = "init", destroyMethod = "close")
+    @Bean(name = "atomikosTransactionManager")
     public TransactionManager atomikosTransactionManager() {
         UserTransactionManager userTransactionManager = new UserTransactionManager();
         userTransactionManager.setForceShutdown(false);

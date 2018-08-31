@@ -1,4 +1,4 @@
-package cn.ok.mybatisdemo.config;
+package cn.ok.mybatisdemo.dsconfig;
 
 import com.atomikos.jdbc.AtomikosDataSourceBean;
 import org.apache.ibatis.session.SqlSessionFactory;

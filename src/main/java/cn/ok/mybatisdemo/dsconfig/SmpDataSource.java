@@ -1,4 +1,4 @@
-package cn.ok.mybatisdemo.config;
+package cn.ok.mybatisdemo.dsconfig;
 
 import com.atomikos.jdbc.AtomikosDataSourceBean;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -24,7 +24,7 @@ import java.util.Properties;
 @MapperScan(basePackages = "cn.ok.mybatisdemo.mapper.smp", sqlSessionTemplateRef = "SmpSqlSessionTemplate")
 public class SmpDataSource {
 
-    public static Properties getDataSourceProperties(Environment env, String prefix) {
+    static Properties getDataSourceProperties(Environment env, String prefix) {
         Properties prop = new Properties();
         prop.put("url", env.getProperty(prefix + "url"));
         prop.put("username", env.getProperty(prefix + "username"));

@@ -1,10 +1,12 @@
 package cn.ok.mybatisdemo.controller;
 
+import cn.ok.mybatisdemo.entity.AsyncTask;
 import cn.ok.mybatisdemo.entity.User;
 import cn.ok.mybatisdemo.mapper.mydb.MydbUserMapper;
 import cn.ok.mybatisdemo.mapper.smp.SmpUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,14 +19,22 @@ import java.util.List;
 @Slf4j
 @RestController
 public class UserController {
-    @Autowired
-    private MydbUserMapper mydbUserMapper;
+
+    private final AsyncTask asyncTask;
+
+    private final MydbUserMapper mydbUserMapper;
+
+    private final SmpUserMapper smpUserMapper;
+
+    private final TransactionManager transactionManager;
 
     @Autowired
-    private SmpUserMapper smpUserMapper;
-
-    @Autowired(required = false)
-    private TransactionManager transactionManager;
+    public UserController(AsyncTask asyncTask, MydbUserMapper mydbUserMapper, SmpUserMapper smpUserMapper, TransactionManager transactionManager) {
+        this.asyncTask = asyncTask;
+        this.mydbUserMapper = mydbUserMapper;
+        this.smpUserMapper = smpUserMapper;
+        this.transactionManager = transactionManager;
+    }
 
     @RequestMapping("/smpuser")
     public String getSmpUser() {
@@ -73,5 +83,20 @@ public class UserController {
 
         log.debug("End=============");
         return "END.";
+    }
+
+    @RequestMapping("doUpdate")
+    public String doUpdate() {
+
+        return "update done.";
+    }
+
+    @GetMapping("doSth")
+    public String doSth() {
+        asyncTask.dealNoReturnTask("password");
+        asyncTask.dealNoReturnTask("password1");
+
+        log.debug("Main Thread end");
+        return "Main Thread end";
     }
 }

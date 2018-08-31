@@ -29,6 +29,6 @@ public class UserMapperTest {
         List<User> users = userMapper.doSelect();
         System.out.println(users.toString());
 
-        Assert.assertEquals(1, users.size(), 1d);
+        Assert.assertEquals(3, users.size(), 1d);
     }
 }
